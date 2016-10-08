@@ -21,6 +21,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button camera_button = (Button) findViewById(R.id.camera_button);
+        camera_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         Button notDrunkBtn = (Button) findViewById(R.id.no_longer_drunk_btn);
         notDrunkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
