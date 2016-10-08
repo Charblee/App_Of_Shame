@@ -13,9 +13,6 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_activity);
 
-/*
-
-*/
         Button button = (Button)findViewById(R.id.git_drinking_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,7 +22,5 @@ public class LaunchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-/*
-        */
     }
 }
