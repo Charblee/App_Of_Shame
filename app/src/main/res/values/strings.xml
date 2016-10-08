@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">App of Shame</string>
+    <string name="app_name_two_lines">App of\nShame</string>
+</resources>
