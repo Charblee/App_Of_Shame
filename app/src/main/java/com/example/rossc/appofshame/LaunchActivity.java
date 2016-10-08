@@ -14,15 +14,7 @@ public class LaunchActivity extends AppCompatActivity {
         setContentView(R.layout.launch_activity);
 
 /*
-        Button emergency_button = (Button)findViewById(R.id.select_chat_friends);
-        emergency_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intent = new Intent(getApplicationContext(), SetupActivity.class);
-                startActivity(intent);
-            }
-        });
 */
         Button button = (Button)findViewById(R.id.git_drinking_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -34,14 +26,6 @@ public class LaunchActivity extends AppCompatActivity {
             }
         });
 /*
-        Button git_drunk = (Button)findViewById(R.id.git_drinking_button);
-        emergency_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getApplicationContext(), SetupActivity.class);
-                startActivity(intent);
-            }
-        });*/
+        */
     }
 }
