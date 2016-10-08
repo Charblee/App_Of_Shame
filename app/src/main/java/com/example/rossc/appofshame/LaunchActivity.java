@@ -13,12 +13,32 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_activity);
 
+
+        Button emergency_button = (Button)findViewById(R.id.select_chat_friends);
+        emergency_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplicationContext(), SetupActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Button button = (Button)findViewById(R.id.git_drinking_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //TODO: Does this work?
+                Intent intent = new Intent(getApplicationContext(), SetupActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button git_drunk = (Button)findViewById(R.id.git_drinking_button);
+        emergency_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
                 Intent intent = new Intent(getApplicationContext(), SetupActivity.class);
                 startActivity(intent);
             }
