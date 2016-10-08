@@ -93,10 +93,20 @@ app.get('/new_messages/:chat_id',function (req, res)
 {
     console.log(req.body.since);
 
-    var since = Date.parse(req.body.since);
-    console.log(since);
-
-    connection.query('')
+    connection.query('SELECT message_id FROM texts WHERE chat_id=? AND post_time > FROM_UNIXTIME(UNIX_TIMESTAMP(?));',
+        [req.params.chat_id, req.body.since],function (err, out)
+        {
+            if (err)
+            {
+                console.log(err);
+                res.sendStatus(500);
+            }
+            else
+            {
+                console.log(out);
+                res.send(out);
+            }
+        });
 });
 
 app.listen(8080);

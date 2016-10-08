@@ -1,2 +1,2 @@
-echo | curl -H "Content-Type: application/json" -X POST -d '{"msg":"ja!"}' http://localhost:8080/message/1/text
+echo | curl -H "Content-Type: application/json" -X POST -d '{"msg":"ja!"}' http://localhost:8080/message/2/text
 echo
