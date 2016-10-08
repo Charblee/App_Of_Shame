@@ -23,9 +23,12 @@
             android:label="LABEL"
             />
         <uses-permission android:name="android.permission.CAMERA" />
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+            android:maxSdkVersion="18" />
         <uses-feature android:name="android.hardware.camera.any" />
         <uses-feature android:name="android.hardware.camera" android:required="false"/>
         <uses-feature android:name="android.hardware.camera.autofocus" />
         <uses-feature android:name="android.hardware.camera.flash" />
     </application>
+
 </manifest>

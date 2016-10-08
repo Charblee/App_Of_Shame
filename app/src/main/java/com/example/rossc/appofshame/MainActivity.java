@@ -2,9 +2,14 @@ package com.example.rossc.appofshame;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +35,21 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                 startActivity(intent);
 
+            }
+            String mCurrentPhotoPath;
+            private File createImageFile() throws IOException {
+            // Create an image file name
+                String timeStamp = new SimpleDateFormat("yyyMMdd_HHmmss"). format(new Date());
+                String imageFileName = "JPEG_" + timeStamp + "_";
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                File image = File.createTempFile(
+                        imageFileName, /* prefix */
+                        ".jpg", /*suffix */
+                        storageDir /* directory */
+                );
+
+                mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+                return image;
             }
         });
 
