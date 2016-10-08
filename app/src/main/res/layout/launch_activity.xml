@@ -23,5 +23,4 @@
         android:textSize="24sp"
         android:id="@+id/git_drinking_button"
         />
-
 </RelativeLayout>
