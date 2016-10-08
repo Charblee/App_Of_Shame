@@ -13,6 +13,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        Button chat_button = (Button) findViewById(R.id.chat_button);
+        chat_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         Button notDrunkBtn = (Button) findViewById(R.id.no_longer_drunk_btn);
         notDrunkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
