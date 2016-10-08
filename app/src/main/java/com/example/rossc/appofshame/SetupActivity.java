@@ -9,7 +9,6 @@ public class SetupActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-
+        setContentView(R.layout.setup_activity);
     }
 }
