@@ -2,30 +2,36 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.rossc.appofshame">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LaunchActivity"
+            android:name="com.example.rossc.appofshame.LaunchActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".SetupActivity"
+            android:name="com.example.rossc.appofshame.SetupActivity"
+            android:label="LABEL" />
+        <activity
+            android:name="com.example.rossc.appofshame.MainActivity"
             android:label="LABEL" />
 
-        <activity
-            android:name=".MainActivity"
-            android:label="LABEL"
-            />
-        <uses-permission android:name="android.permission.CAMERA" />
         <uses-feature android:name="android.hardware.camera.any" />
-        <uses-feature android:name="android.hardware.camera" android:required="false"/>
+        <uses-feature
+            android:name="android.hardware.camera"
+            android:required="false" />
         <uses-feature android:name="android.hardware.camera.autofocus" />
         <uses-feature android:name="android.hardware.camera.flash" />
+
     </application>
+
 </manifest>
