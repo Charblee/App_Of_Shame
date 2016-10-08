@@ -1,0 +1,2 @@
+echo | curl localhost:8080/create_group
+echo

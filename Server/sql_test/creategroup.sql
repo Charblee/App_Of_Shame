@@ -1,2 +1,3 @@
 use shame_app;
-select chat_id from chats where (insert into chats values ());
+insert into chats values ()
+select LAST_INSERT_ID();
