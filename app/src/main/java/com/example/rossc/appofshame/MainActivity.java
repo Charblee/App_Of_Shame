@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
         chat_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-
+                ChatService service = ChatService.Instance(MainActivity.this);
+                service.createGroup();
             }
         });
 
