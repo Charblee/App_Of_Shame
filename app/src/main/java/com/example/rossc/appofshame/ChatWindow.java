@@ -3,11 +3,13 @@ package com.example.rossc.appofshame;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,7 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
             }
         });
 
-        Button refreshBtn = (Button) findViewById(R.id.refresh_btn);
+        FloatingActionButton refreshBtn = (FloatingActionButton) findViewById(R.id.refresh_btn);
         refreshBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -64,6 +66,8 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
         trans.commit();
 
         fragments.add(frag);
+        ScrollView msgView = (ScrollView) findViewById(R.id.scrollView2);
+        msgView.fullScroll(View.FOCUS_DOWN);
     }
 
     public void clearFragments()
