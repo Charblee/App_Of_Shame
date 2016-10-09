@@ -35,6 +35,7 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
                 String msg = editText.getText().toString();
                 service.sendMessage(msg);
                 editText.setText("");
+                refresh();
             }
         });
 
@@ -44,8 +45,7 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
             @Override
             public void onClick(View view)
             {
-                clearFragments();
-                service.pollForMessages();
+                refresh();
             }
         });
     }
@@ -79,5 +79,12 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
         }
         trans.commit();
         fragments = new ArrayList<>();
+    }
+
+    public void refresh()
+    {
+        final ChatService service = ChatService.Instance(ChatWindow.this);
+        clearFragments();
+        service.pollForMessages();
     }
 }

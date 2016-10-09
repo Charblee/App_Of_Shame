@@ -211,7 +211,7 @@ public class ChatService
                     public void onResponse(JSONObject response)
                     {
                         // Check for a new message (like the one just posted)
-                        pollForMessages();
+                      //  pollForMessages();
                     }
                 },
                 new Response.ErrorListener()
@@ -227,7 +227,7 @@ public class ChatService
                             e.printStackTrace();
                         }
                         // Check for a new message (like the one just posted)
-                        pollForMessages();
+                  //      pollForMessages();
                     }
                 });
         _queue.add(postMsg);
