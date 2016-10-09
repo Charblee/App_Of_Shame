@@ -9,22 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class TestPage extends AppCompatActivity {
-
-    /* public void onClick(View arg0) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        alertDialogBuilder.setTitle("Nope! You're still drunk!");
-
-        alertDialogBuilder
-            .setMessage("Exit")
-            .setCancelable(false)
-            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    TestPage.this.finish();
-                }
-            });
-    } */
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
