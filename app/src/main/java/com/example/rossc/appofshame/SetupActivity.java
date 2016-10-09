@@ -2,10 +2,13 @@ package com.example.rossc.appofshame;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +16,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.jar.Manifest;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -75,17 +81,22 @@ public class SetupActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case CONTACT_PICKER_RESULT:
-                    //Do stuff here
-                    Uri uri = data.getData();
-                    Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-                    cursor.moveToFirst();
 
-                    int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                    _phoneNumber = cursor.getString(phoneIndex);
+                    //TODO: Fix or disable emergency contact phone number
 
-                    int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-                    _contactName = cursor.getString(nameIndex);
+                    Uri result = data.getData();
+                    String id = result.getLastPathSegment();
+                    Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID+"=?",new String[]{id},null);
+                    if(cursor.moveToFirst())
+                    {
+                        int number = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                        _phoneNumber = cursor.getString(number);
+                    }
 
+
+
+                    displayName();
                     break;
                 default:
                     break;
@@ -119,7 +130,7 @@ public class SetupActivity extends AppCompatActivity {
     private void displayName() {
         TextView emergency = (TextView) findViewById(R.id.emergency_contact);
         if (!_contactName.isEmpty()) {
-            emergency.setText(_contactName);
+            emergency.setText(_contactName + "-" + _phoneNumber);
         }
         else
         {
