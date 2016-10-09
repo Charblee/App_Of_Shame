@@ -89,8 +89,9 @@ app.get('/pic/:chat_id/:message_id',function (req, res)
     res.send("Pic returned")
 });
 
-app.get('/new_messages/:chat_id',function (req, res)
+app.post('/new_messages/:chat_id',function (req, res)
 {
+    console.log(req.body);
     console.log(req.body.since);
 
     connection.query('SELECT message_id FROM texts WHERE chat_id=? AND post_time > FROM_UNIXTIME(UNIX_TIMESTAMP(?));',

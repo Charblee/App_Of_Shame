@@ -59,26 +59,57 @@ public class ChatService
     {
         Log.v(TAG, "Join Group: "+ groupId);
         _groupId = groupId;
+        pollForMessages();
     }
 
-    public void pollForMessages()
+    private void startPolling()
+    {
+
+    }
+
+    private void pollForMessages()
     {
         Log.v(TAG, "Poll.");
 
         StringBuilder url = new StringBuilder(_url);
         url.append(POLL_MSGS.replace(CHAT_ID_PLACEHOLDER, ""+_groupId));
 
-        // TODO: poll for new messages.
+        // Poll for new messages.
+
+        JSONObject json = null;
+        try
+        {
+            json = new JSONObject();
+            json.put("since", ""+_lastMessage);
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, json.toString());
+
+
         JsonArrayRequest getNewMessages = new JsonArrayRequest(
-                Request.Method.GET,
+                Request.Method.POST,
                 url.toString(),
-                null,
+                json.toString(),
                 new Response.Listener<JSONArray>()
                 {
                     @Override
                     public void onResponse(JSONArray response)
                     {
-
+                        Log.v(TAG, "Poll response: "+response);
+                        for(int i = 0; i < response.length(); i++)
+                        {
+                            try
+                            {
+                                int msgNum = response.getInt(i);
+                                getMessage(msgNum);
+                            } catch (JSONException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 },
                 new Response.ErrorListener()
@@ -86,9 +117,16 @@ public class ChatService
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-
+                        try
+                        {
+                            throw error;
+                        } catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 });
+        _queue.add(getNewMessages);
     }
 
     public void createGroup(final IGroupCreated callback)
@@ -101,7 +139,7 @@ public class ChatService
         JsonObjectRequest req = new JsonObjectRequest(
                 Request.Method.GET,
                 url.toString(),
-                null,
+                (JSONObject) null,
                 new Response.Listener<JSONObject>()
         {
             @Override
@@ -139,5 +177,11 @@ public class ChatService
     {
         Log.v(TAG, "Send message: " + message);
         // TODO: Send message.
+    }
+
+    public void getMessage(int msgID)
+    {
+        Log.v(TAG, "Get message: " + msgID);
+        // TODO: Get Message.
     }
 }
