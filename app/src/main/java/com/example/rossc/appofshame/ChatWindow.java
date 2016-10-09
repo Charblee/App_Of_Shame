@@ -9,7 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatWindow extends AppCompatActivity implements ChatService.IMessageListener {
+
+    private ArrayList<ChatFragment> fragments = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -27,6 +32,7 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
                 // TODO: SendToServer(editText.getText());
                 String msg = editText.getText().toString();
                 service.sendMessage(msg);
+                editText.setText("");
             }
         });
 
@@ -36,6 +42,7 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
             @Override
             public void onClick(View view)
             {
+                clearFragments();
                 service.pollForMessages();
             }
         });
@@ -53,7 +60,20 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
 
         ChatFragment frag = new ChatFragment();
         frag.setMessage(message_content);
-        trans.add(chat.getId(),frag);
+        trans.add(chat.getId(), frag);
         trans.commit();
+
+        fragments.add(frag);
+    }
+
+    public void clearFragments()
+    {
+        FragmentTransaction trans = getFragmentManager().beginTransaction();
+        for(ChatFragment frag: fragments)
+        {
+            trans.remove(frag);
+        }
+        trans.commit();
+        fragments = new ArrayList<>();
     }
 }

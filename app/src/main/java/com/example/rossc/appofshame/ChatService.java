@@ -255,7 +255,7 @@ public class ChatService
                         try
                         {
                             String msg_content = response.getString("text");
-                            _lastMessage = response.getString("post_time");
+                            //_lastMessage = response.getString("post_time");
                             // TODO: Dump messages to subscriber.
                             if (_chatView != null)
                             {
