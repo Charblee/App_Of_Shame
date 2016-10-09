@@ -2,13 +2,10 @@ package com.example.rossc.appofshame;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.provider.ContactsContract;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +13,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.jar.Manifest;
-
 public class SetupActivity extends AppCompatActivity {
 
-    private String _phoneNumber = "";
+    //TODO: Add support to get an emergency contact's phone number
     private String _contactName = "";
     private int _hour = -1;
     private int _minute = -1;
@@ -40,7 +33,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Time Picker
-                TimePickerDialog timePicker = new TimePickerDialog(SetupActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePicker = new TimePickerDialog(SetupActivity.this,R.style.DatePickerStyle, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         _hour = hour;
@@ -85,17 +78,10 @@ public class SetupActivity extends AppCompatActivity {
                     //TODO: Fix or disable emergency contact phone number
 
                     Uri result = data.getData();
-                    String id = result.getLastPathSegment();
-                    Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID+"=?",new String[]{id},null);
-                    if(cursor.moveToFirst())
-                    {
-                        int number = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                        _phoneNumber = cursor.getString(number);
-                    }
-
-
-
+                    Cursor cursor = getContentResolver().query(result,null,null,null,null);
+                    cursor.moveToFirst();
+                    int name = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                    _contactName = cursor.getString(name);
                     displayName();
                     break;
                 default:
@@ -130,7 +116,7 @@ public class SetupActivity extends AppCompatActivity {
     private void displayName() {
         TextView emergency = (TextView) findViewById(R.id.emergency_contact);
         if (!_contactName.isEmpty()) {
-            emergency.setText(_contactName + "-" + _phoneNumber);
+            emergency.setText(_contactName );
         }
         else
         {
