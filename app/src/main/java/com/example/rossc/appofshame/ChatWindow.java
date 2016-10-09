@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-public class ChatWindow extends AppCompatActivity implements ChatService.IGroupCreated {
+public class ChatWindow extends AppCompatActivity implements ChatService.IMessageListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -18,33 +18,12 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IGroupC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_window);
         ChatService service = ChatService.Instance(ChatWindow.this);
-        service.createGroup(ChatWindow.this);
 
-            addChatFragment("awsddfasfasdfasdasdf");
-
-            for(int i=0;i<50;i++)
-            {
-                addChatFragment(""+i);
-            }
-
+        service.registerChatView(this);
     }
 
     @Override
-    public void onGroupJoined(int groupNumber)
-    {
-        AlertDialog.Builder teamDialog = new AlertDialog.Builder(ChatWindow.this);
-        teamDialog.setTitle("Group ID");
-        teamDialog.setMessage("" + groupNumber);
-        teamDialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        teamDialog.show();
-    }
-
-    public void addChatFragment(String message)
+    public void messageRecieved(String message_content)
     {
         //Setup
         LinearLayout chat = (LinearLayout) findViewById(R.id.chat_view);
@@ -54,7 +33,7 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IGroupC
         //put fragment in view
 
         ChatFragment frag = new ChatFragment();
-        frag.setMessage(message);
+        frag.setMessage(message_content);
         trans.add(chat.getId(),frag);
         trans.commit();
     }

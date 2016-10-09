@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements ChatService.IGroupCreated
 {
 
     @Override
@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
+                ChatService service = ChatService.Instance(MainActivity.this);
+                service.createGroup(MainActivity.this);
 
                 Intent intent = new Intent(MainActivity.this,ChatWindow.class);
                 startActivity(intent);
-
-
             }
         });
 
@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity
                         int groupID = Integer.parseInt(input.getText().toString());
                         ChatService service = ChatService.Instance(MainActivity.this);
                         service.joinGroup(groupID);
+
+                        Intent intent = new Intent(MainActivity.this,ChatWindow.class);
+                        startActivity(intent);
                     }
                 });
                 builder.show();
@@ -101,7 +104,20 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-
+    @Override
+    public void onGroupJoined(int groupNumber)
+    {
+        AlertDialog.Builder teamDialog = new AlertDialog.Builder(MainActivity.this);
+        teamDialog.setTitle("Group ID");
+        teamDialog.setMessage("" + groupNumber);
+        teamDialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        teamDialog.show();
+    }
 }
 
 

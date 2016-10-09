@@ -9,7 +9,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -26,7 +25,6 @@ public class ChatService
     public interface IMessageListener
     {
         void messageRecieved(String message_content);
-        void clearMessages();
     }
 
     private static final String TAG = ChatService.class.getSimpleName();
@@ -36,6 +34,7 @@ public class ChatService
     private static RequestQueue _queue;
     private static int _groupId;
     private static String _lastMessage = "0";
+    private static IMessageListener _chatView;
 
     private static final String POST_MSG = "/message/{chat_id}/text";
     private static final String GET_MSG = "/text/{chat_id}/{message_id}";
@@ -60,6 +59,11 @@ public class ChatService
     {
         Log.v(TAG, "Created ChatService.");
         _url = "http://10.18.3.206:8080";
+    }
+
+    public void registerChatView(IMessageListener chatView)
+    {
+        _chatView = chatView;
     }
 
     public void joinGroup(int groupId)
@@ -258,6 +262,10 @@ public class ChatService
                             String msg_content = response.getString("text");
                             _lastMessage = response.getString("post_time");
                             // TODO: Dump messages to subscriber.
+                            if (_chatView != null)
+                            {
+                                _chatView.messageRecieved(msg_content);
+                            }
                         } catch (JSONException e)
                         {
                             e.printStackTrace();
