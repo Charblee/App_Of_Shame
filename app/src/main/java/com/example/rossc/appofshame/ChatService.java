@@ -103,7 +103,8 @@ public class ChatService
                         {
                             try
                             {
-                                int msgNum = response.getInt(i);
+                                JSONObject o =response.getJSONObject(i);
+                                int msgNum = o.getInt("message_id");
                                 getMessage(msgNum);
                             } catch (JSONException e)
                             {
