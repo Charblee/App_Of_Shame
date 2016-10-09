@@ -89,8 +89,6 @@ public class SetupActivity extends AppCompatActivity {
             switch (requestCode) {
                 case CONTACT_PICKER_RESULT:
 
-                    //TODO: Fix or disable emergency contact phone number
-
                     Uri result = data.getData();
                     Cursor cursor = getContentResolver().query(result, null, null, null, null);
                     cursor.moveToFirst();

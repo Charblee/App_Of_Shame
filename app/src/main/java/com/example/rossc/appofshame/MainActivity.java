@@ -1,6 +1,5 @@
 package com.example.rossc.appofshame;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.content.Intent;
@@ -111,11 +110,17 @@ public class MainActivity extends AppCompatActivity implements ChatService.IGrou
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                Intent intent = new Intent(MainActivity.this,ChatWindow.class);
+                Intent intent = new Intent(MainActivity.this, ChatWindow.class);
                 startActivity(intent);
             }
         });
         teamDialog.show();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        //This is left blank intentionally to prevent the user from going back to the setup screen
     }
 }
 
