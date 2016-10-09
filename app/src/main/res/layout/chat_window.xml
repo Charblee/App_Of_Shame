@@ -29,13 +29,17 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#00FF00" />
+            android:background="#00FF00"
+            android:id="@+id/chat_send_message"
+            />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#0000FF"
-            android:text="Send!" />
+            android:text="Send!"
+            android:id="@+id/chat_send_button"
+            />
 
     </LinearLayout>
 
