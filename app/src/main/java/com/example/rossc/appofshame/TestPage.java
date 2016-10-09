@@ -10,21 +10,6 @@ import android.widget.Button;
 
 public class TestPage extends AppCompatActivity {
 
-    /* public void onClick(View arg0) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        alertDialogBuilder.setTitle("Nope! You're still drunk!");
-
-        alertDialogBuilder
-            .setMessage("Exit")
-            .setCancelable(false)
-            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    TestPage.this.finish();
-                }
-            });
-    } */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,20 +24,39 @@ public class TestPage extends AppCompatActivity {
                 alertDialogBuilder.setTitle("Nope! You're still drunk!");
 
                 alertDialogBuilder
-                        .setMessage("Exit")
+                        .setMessage("")
                         .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("My B.", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
                                 TestPage.this.finish();
                             }
                         });
+                alertDialogBuilder.show();
             }
         });
         Button right_button = (Button) findViewById(R.id.right_button);
         right_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TestPage.this);
+
+                alertDialogBuilder.setTitle("Congratulations! You're sober...enough.");
+
+                alertDialogBuilder
+                        .setMessage("")
+                        .setCancelable(false)
+                        .setPositiveButton("Swag.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(getApplicationContext(), LaunchActivity.class);
+                                startActivity(intent);
+                                TestPage.this.finish();
+                            }
+                        });
+                alertDialogBuilder.show();
 
             }
         });
