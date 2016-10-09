@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -29,6 +32,35 @@ public class MainActivity extends AppCompatActivity implements ChatService.IGrou
             public void onClick(View view) {
                 ChatService service = ChatService.Instance(MainActivity.this);
                 service.createGroup(MainActivity.this);
+            }
+        });
+
+        Button join_chat_btn = (Button) findViewById(R.id.join_chat_button);
+        join_chat_btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Join Group");
+                builder.setCancelable(true);
+
+                final EditText input = new EditText(MainActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+                builder.setView(input);
+
+                builder.setPositiveButton("Join", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        int groupID = Integer.parseInt(input.getText().toString());
+                        ChatService service = ChatService.Instance(MainActivity.this);
+                        service.joinGroup(groupID);
+                    }
+                });
+                builder.show();
             }
         });
 

@@ -61,7 +61,7 @@ app.post('/message/:chat_id/pic', function (req, res)
 
 app.get('/text/:chat_id/:message_id',function (req, res)
 {
-    console.log("Get text message----------")
+    console.log("Get text message----------");
     console.log(req.params.chat_id);
     console.log(req.params.message_id);
 
