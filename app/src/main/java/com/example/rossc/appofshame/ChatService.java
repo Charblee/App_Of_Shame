@@ -211,7 +211,7 @@ public class ChatService
                     public void onResponse(JSONObject response)
                     {
                         // Check for a new message (like the one just posted)
-                        //pollForMessages();
+                        pollForMessages();
                     }
                 },
                 new Response.ErrorListener()
@@ -227,7 +227,7 @@ public class ChatService
                             e.printStackTrace();
                         }
                         // Check for a new message (like the one just posted)
-                        //pollForMessages();
+                        pollForMessages();
                     }
                 });
         _queue.add(postMsg);
@@ -255,7 +255,9 @@ public class ChatService
                         try
                         {
                             String msg_content = response.getString("text");
-                            _lastMessage = response.getString("post_time");
+                            //_lastMessage = response.getString("post_time")
+                            //        .replace('T', ' ')
+                            //        .replace(".000Z","");
                             // TODO: Dump messages to subscriber.
                             if (_chatView != null)
                             {
