@@ -20,5 +20,13 @@ public class TestPage extends AppCompatActivity {
 
             }
         });
+
+        Button right_button = (Button) findViewById(R.id.right_button);
+        right_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 }

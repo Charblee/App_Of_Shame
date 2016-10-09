@@ -29,6 +29,7 @@
         android:textStyle="bold"
         android:textSize="24dp"
         android:id="@+id/you_drunk_AF_button"
+        android:gravity="center"
         />
 
 </RelativeLayout>
