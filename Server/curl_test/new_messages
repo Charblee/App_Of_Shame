@@ -1,2 +1,2 @@
-echo | curl -X GET -H "Accept: application/json" -d "since"="2016-10-08T14:15:23.000Z" "http://localhost:8080/new_messages/2"
+echo | curl -X POST -H "Accept: application/json" -d "since"="2016-10-09T05:30:38.000Z" "http://localhost:8080/new_messages/2"
 echo

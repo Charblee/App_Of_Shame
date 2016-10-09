@@ -119,12 +119,7 @@ public class ChatService
         _queue.add(req);
     }
 
-    private void startPolling()
-    {
-
-    }
-
-    private void pollForMessages()
+    public void pollForMessages()
     {
         Log.v(TAG, "Poll.");
 
@@ -216,7 +211,7 @@ public class ChatService
                     public void onResponse(JSONObject response)
                     {
                         // Check for a new message (like the one just posted)
-                        pollForMessages();
+                        //pollForMessages();
                     }
                 },
                 new Response.ErrorListener()
@@ -232,7 +227,7 @@ public class ChatService
                             e.printStackTrace();
                         }
                         // Check for a new message (like the one just posted)
-                        pollForMessages();
+                        //pollForMessages();
                     }
                 });
         _queue.add(postMsg);

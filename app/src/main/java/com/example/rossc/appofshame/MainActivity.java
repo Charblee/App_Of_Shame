@@ -33,9 +33,6 @@ public class MainActivity extends AppCompatActivity implements ChatService.IGrou
 
                 ChatService service = ChatService.Instance(MainActivity.this);
                 service.createGroup(MainActivity.this);
-
-                Intent intent = new Intent(MainActivity.this,ChatWindow.class);
-                startActivity(intent);
             }
         });
 
@@ -114,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements ChatService.IGrou
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+                Intent intent = new Intent(MainActivity.this,ChatWindow.class);
+                startActivity(intent);
             }
         });
         teamDialog.show();

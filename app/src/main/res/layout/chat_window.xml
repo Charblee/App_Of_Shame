@@ -41,6 +41,11 @@
             android:id="@+id/chat_send_button"
             />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ref"
+            android:id="@+id/refresh_btn"/>
     </LinearLayout>
 
 </LinearLayout>

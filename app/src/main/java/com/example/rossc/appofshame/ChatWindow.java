@@ -16,7 +16,7 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_window);
-        ChatService service = ChatService.Instance(ChatWindow.this);
+        final ChatService service = ChatService.Instance(ChatWindow.this);
         service.registerChatView(this);
 
         Button sendButton = (Button)findViewById(R.id.chat_send_button);
@@ -25,6 +25,18 @@ public class ChatWindow extends AppCompatActivity implements ChatService.IMessag
             public void onClick(View view) {
                 EditText editText = (EditText)findViewById(R.id.chat_send_message);
                 // TODO: SendToServer(editText.getText());
+                String msg = editText.getText().toString();
+                service.sendMessage(msg);
+            }
+        });
+
+        Button refreshBtn = (Button) findViewById(R.id.refresh_btn);
+        refreshBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                service.pollForMessages();
             }
         });
     }
