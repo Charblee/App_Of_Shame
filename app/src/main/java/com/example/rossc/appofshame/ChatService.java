@@ -7,11 +7,22 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ChatService
 {
+    public interface IGroupCreated
+    {
+        void onGroupJoined(int groupNumber);
+    }
+
     private static final String TAG = ChatService.class.getSimpleName();
     private static ChatService _instance;
     private static String _url;
@@ -24,6 +35,8 @@ public class ChatService
     private static final String GET_MSG = "/text/{chat_id}/{message_id}";
     private static final String POLL_MSGS = "/new_messages/{chat_id}";
     private static final String CREATE_GROUP = "/create_group";
+
+    private static final String CHAT_ID_PLACEHOLDER = "{chat_id}";
 
     public static ChatService Instance(Context c)
     {
@@ -51,25 +64,58 @@ public class ChatService
     public void pollForMessages()
     {
         Log.v(TAG, "Poll.");
+
+        StringBuilder url = new StringBuilder(_url);
+        url.append(POLL_MSGS.replace(CHAT_ID_PLACEHOLDER, ""+_groupId));
+
         // TODO: poll for new messages.
+        JsonArrayRequest getNewMessages = new JsonArrayRequest(
+                Request.Method.GET,
+                url.toString(),
+                null,
+                new Response.Listener<JSONArray>()
+                {
+                    @Override
+                    public void onResponse(JSONArray response)
+                    {
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+
+                    }
+                });
     }
 
-    public void createGroup()
+    public void createGroup(final IGroupCreated callback)
     {
         Log.v(TAG, "Create Group.");
         // TODO: Create group.
         StringBuilder url = new StringBuilder(_url);
         url.append(CREATE_GROUP);
 
-        StringRequest req = new StringRequest(
+        JsonObjectRequest req = new JsonObjectRequest(
                 Request.Method.GET,
                 url.toString(),
-                new Response.Listener<String>()
+                null,
+                new Response.Listener<JSONObject>()
         {
             @Override
-            public void onResponse(String response)
+            public void onResponse(JSONObject response)
             {
                 Log.v(TAG, "Create group res: " + response);
+                try{
+                    _groupId = response.getInt("chat_id");
+                    // Show on screen.
+                    callback.onGroupJoined(_groupId);
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener()
         {

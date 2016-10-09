@@ -1,8 +1,11 @@
 package com.example.rossc.appofshame;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.content.Intent;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +14,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ChatService.IGroupCreated
+{
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -24,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ChatService service = ChatService.Instance(MainActivity.this);
-                service.createGroup();
+                service.createGroup(MainActivity.this);
             }
         });
 
@@ -63,6 +67,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onGroupJoined(int groupNumber)
+    {
+        AlertDialog.Builder teamDialog = new AlertDialog.Builder(MainActivity.this);
+        teamDialog.setTitle("Group ID");
+        teamDialog.setMessage("" + groupNumber);
+        teamDialog.setPositiveButton("Done", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                dialogInterface.dismiss();
+            }
+        });
+        teamDialog.show();
     }
 }
 
