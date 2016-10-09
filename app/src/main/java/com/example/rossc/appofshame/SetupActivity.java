@@ -1,6 +1,8 @@
 package com.example.rossc.appofshame;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+
 public class SetupActivity extends AppCompatActivity {
 
     //TODO: Add support to get an emergency contact's phone number
@@ -33,7 +36,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Time Picker
-                TimePickerDialog timePicker = new TimePickerDialog(SetupActivity.this,R.style.DatePickerStyle, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePicker = new TimePickerDialog(SetupActivity.this, R.style.DatePickerStyle, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         _hour = hour;
@@ -63,8 +66,19 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                if (_hour != -1 && !_contactName.isEmpty()) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SetupActivity.this);
+                    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).setMessage("Make sure to set an end time and an emergency contact").show();
+                }
             }
         });
     }
@@ -78,7 +92,7 @@ public class SetupActivity extends AppCompatActivity {
                     //TODO: Fix or disable emergency contact phone number
 
                     Uri result = data.getData();
-                    Cursor cursor = getContentResolver().query(result,null,null,null,null);
+                    Cursor cursor = getContentResolver().query(result, null, null, null, null);
                     cursor.moveToFirst();
                     int name = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
                     _contactName = cursor.getString(name);
@@ -116,10 +130,8 @@ public class SetupActivity extends AppCompatActivity {
     private void displayName() {
         TextView emergency = (TextView) findViewById(R.id.emergency_contact);
         if (!_contactName.isEmpty()) {
-            emergency.setText(_contactName );
-        }
-        else
-        {
+            emergency.setText(_contactName);
+        } else {
             emergency.setText("Click to set contact");
         }
     }
