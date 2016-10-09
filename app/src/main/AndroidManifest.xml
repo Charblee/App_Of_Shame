@@ -37,6 +37,7 @@
         <uses-feature android:name="android.hardware.camera.flash" />
 
         <activity android:name=".SobrietyVerification" />
+        <activity android:name=".ChatWindow" />
         <activity android:name=".TestPage"></activity>
     </application>
 

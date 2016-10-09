@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements ChatService.IGroupCreated
+public class MainActivity extends AppCompatActivity
 {
 
     @Override
@@ -27,20 +27,22 @@ public class MainActivity extends AppCompatActivity implements ChatService.IGrou
         setContentView(R.layout.main_activity);
 
         Button chat_button = (Button) findViewById(R.id.chat_button);
-        chat_button.setOnClickListener(new View.OnClickListener(){
+        chat_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChatService service = ChatService.Instance(MainActivity.this);
-                service.createGroup(MainActivity.this);
+
+
+                Intent intent = new Intent(MainActivity.this,ChatWindow.class);
+                startActivity(intent);
+
+
             }
         });
 
         Button join_chat_btn = (Button) findViewById(R.id.join_chat_button);
-        join_chat_btn.setOnClickListener(new View.OnClickListener()
-        {
+        join_chat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Join Group");
                 builder.setCancelable(true);
@@ -50,11 +52,9 @@ public class MainActivity extends AppCompatActivity implements ChatService.IGrou
 
                 builder.setView(input);
 
-                builder.setPositiveButton("Join", new DialogInterface.OnClickListener()
-                {
+                builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i)
-                    {
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         int groupID = Integer.parseInt(input.getText().toString());
                         ChatService service = ChatService.Instance(MainActivity.this);
                         service.joinGroup(groupID);
@@ -101,22 +101,7 @@ public class MainActivity extends AppCompatActivity implements ChatService.IGrou
         });
     }
 
-    @Override
-    public void onGroupJoined(int groupNumber)
-    {
-        AlertDialog.Builder teamDialog = new AlertDialog.Builder(MainActivity.this);
-        teamDialog.setTitle("Group ID");
-        teamDialog.setMessage("" + groupNumber);
-        teamDialog.setPositiveButton("Done", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
-                dialogInterface.dismiss();
-            }
-        });
-        teamDialog.show();
-    }
+
 }
 
 
