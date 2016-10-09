@@ -75,8 +75,8 @@ app.get('/text/:chat_id/:message_id',function (req, res)
         }
         else
         {
-            console.log(out);
-            res.send(out);
+            console.log(out[0]);
+            res.send(out[0]);
         }
     });
 });

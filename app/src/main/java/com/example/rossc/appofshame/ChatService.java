@@ -23,6 +23,12 @@ public class ChatService
         void onGroupJoined(int groupNumber);
     }
 
+    public interface IMessageListener
+    {
+        void messageRecieved(String message_content);
+        void clearMessages();
+    }
+
     private static final String TAG = ChatService.class.getSimpleName();
     private static ChatService _instance;
     private static String _url;
@@ -37,6 +43,7 @@ public class ChatService
     private static final String CREATE_GROUP = "/create_group";
 
     private static final String CHAT_ID_PLACEHOLDER = "{chat_id}";
+    private static final String MSG_ID_PLACEHOLDER = "{message_id}";
 
     public static ChatService Instance(Context c)
     {
@@ -58,8 +65,54 @@ public class ChatService
     public void joinGroup(int groupId)
     {
         Log.v(TAG, "Join Group: "+ groupId);
+        _lastMessage = "0";
         _groupId = groupId;
         pollForMessages();
+    }
+
+    public void createGroup(final IGroupCreated callback)
+    {
+        Log.v(TAG, "Create Group.");
+        _lastMessage = "0";
+        // Create group.
+        StringBuilder url = new StringBuilder(_url);
+        url.append(CREATE_GROUP);
+
+        JsonObjectRequest req = new JsonObjectRequest(
+                Request.Method.GET,
+                url.toString(),
+                (JSONObject) null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        Log.v(TAG, "Create group res: " + response);
+                        try{
+                            _groupId = response.getInt("chat_id");
+                            // Show on screen.
+                            callback.onGroupJoined(_groupId);
+                        } catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                Log.e(TAG, "Create group err: " + error.getMessage());
+                try
+                {
+                    throw error;
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+        _queue.add(req);
     }
 
     private void startPolling()
@@ -130,59 +183,101 @@ public class ChatService
         _queue.add(getNewMessages);
     }
 
-    public void createGroup(final IGroupCreated callback)
-    {
-        Log.v(TAG, "Create Group.");
-        // TODO: Create group.
-        StringBuilder url = new StringBuilder(_url);
-        url.append(CREATE_GROUP);
-
-        JsonObjectRequest req = new JsonObjectRequest(
-                Request.Method.GET,
-                url.toString(),
-                (JSONObject) null,
-                new Response.Listener<JSONObject>()
-        {
-            @Override
-            public void onResponse(JSONObject response)
-            {
-                Log.v(TAG, "Create group res: " + response);
-                try{
-                    _groupId = response.getInt("chat_id");
-                    // Show on screen.
-                    callback.onGroupJoined(_groupId);
-                } catch (JSONException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                Log.e(TAG, "Create group err: " + error.getMessage());
-                try
-                {
-                    throw error;
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });
-        _queue.add(req);
-    }
-
     public void sendMessage(String message)
     {
         Log.v(TAG, "Send message: " + message);
-        // TODO: Send message.
+        // Send message.
+
+        JSONObject json = null;
+        try
+        {
+            json = new JSONObject();
+            json.put("msg",message);
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        StringBuilder url = new StringBuilder(_url);
+        url.append(POST_MSG.replace(CHAT_ID_PLACEHOLDER,""+_groupId));
+
+        JsonObjectRequest postMsg = new JsonObjectRequest(
+                Request.Method.POST,
+                url.toString(),
+                json,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        // Check for a new message (like the one just posted)
+                        pollForMessages();
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        try
+                        {
+                            throw error;
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        // Check for a new message (like the one just posted)
+                        pollForMessages();
+                    }
+                });
+        _queue.add(postMsg);
     }
 
     public void getMessage(int msgID)
     {
         Log.v(TAG, "Get message: " + msgID);
-        // TODO: Get Message.
+        // Get Message.
+
+        StringBuilder url = new StringBuilder(_url);
+        url.append(GET_MSG.replace(MSG_ID_PLACEHOLDER, ""+msgID)
+                .replace(CHAT_ID_PLACEHOLDER,""+_groupId));
+
+        JsonObjectRequest getMsg = new JsonObjectRequest(
+                Request.Method.GET,
+                url.toString(),
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        Log.v(TAG,"Got message: " + response);
+
+                        try
+                        {
+                            String msg_content = response.getString("text");
+                            _lastMessage = response.getString("post_time");
+                            // TODO: Dump messages to subscriber.
+                        } catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        try
+                        {
+                            throw error;
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        _queue.add(getMsg);
     }
 }
